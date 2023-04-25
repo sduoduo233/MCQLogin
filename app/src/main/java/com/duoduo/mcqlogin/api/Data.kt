@@ -4,7 +4,8 @@ data class UserInfo(
     val user_name: String,
     val online_ip: String,
     val client_ip: String,
-    val error: String
+    val error: String,
+    val sum_bytes: Long,
 )
 
 data class Challenge(

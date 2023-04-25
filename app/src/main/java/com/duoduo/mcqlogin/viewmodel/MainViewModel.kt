@@ -11,6 +11,7 @@ import com.duoduo.mcqlogin.utils.Encoding2
 import com.duoduo.mcqlogin.utils.md5
 import com.duoduo.mcqlogin.utils.sha1
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.NotNull
 import java.io.IOException

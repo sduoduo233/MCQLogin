@@ -1,8 +1,14 @@
 package com.duoduo.mcqlogin.ui
 
+import android.Manifest
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -12,9 +18,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Observer
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.duoduo.mcqlogin.ui.theme.MCQLoginTheme
 import com.duoduo.mcqlogin.viewmodel.MainViewModel
+import com.duoduo.mcqlogin.widget.UpdateService
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -31,7 +40,32 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            AlertDialog.Builder(this)
+                .setTitle("Permission Required")
+                .setMessage("Accessing background location is required to obtain the SSID of connected wifi.")
+                .setPositiveButton("OK") { _, _ ->
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        requestPermissions(
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                            1
+                        )
+                    } else {
+                        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+                    }
+
+                }
+                .show()
+        }
+
+        val intent = Intent(this, UpdateService::class.java)
+        intent.action = UpdateService.ACTION_UPDATE_SERVICE
+        startService(intent)
     }
+
 }
 
 @Composable
