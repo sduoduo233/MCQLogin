@@ -18,7 +18,6 @@ class MyApplication: Application() {
         Log.d("Application", "onCreate")
 
         val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .build()
 
@@ -30,6 +29,7 @@ class MyApplication: Application() {
                 networkCapabilities: NetworkCapabilities
             ) {
                 super.onCapabilitiesChanged(network, networkCapabilities)
+                Log.d(TAG, networkCapabilities.toString())
 
                 val intent = Intent(this@MyApplication, UpdateService::class.java)
                 intent.action = UpdateService.ACTION_UPDATE_SERVICE

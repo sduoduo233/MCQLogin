@@ -61,6 +61,11 @@ class MainActivity : ComponentActivity() {
                 .show()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         val intent = Intent(this, UpdateService::class.java)
         intent.action = UpdateService.ACTION_UPDATE_SERVICE
         startService(intent)

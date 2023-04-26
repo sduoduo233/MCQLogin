@@ -61,10 +61,18 @@ class UpdateService : LifecycleService() {
                                         "Traffic: ${byteConvert(userInfo.sum_bytes)}\n" +
                                         "IP: ${userInfo.online_ip}"
                         }
+                        else -> {
+                            status = "Error"
+                            icon = R.drawable.baseline_error_outline_24
+                            description = "Error: ${userInfo.error}"
+                        }
                     }
                 }
                 WifiManager.UNKNOWN_SSID -> {
-
+                    if (wifiManager.wifiState == WifiManager.WIFI_STATE_DISABLED) {
+                        status = "Not connected"
+                        icon = R.drawable.baseline_signal_wifi_off_24
+                    }
                 }
                 else -> {
                     status = "Not connected"

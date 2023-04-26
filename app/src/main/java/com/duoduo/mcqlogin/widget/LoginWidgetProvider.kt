@@ -29,6 +29,30 @@ class LoginWidgetProvider : AppWidgetProvider() {
                 context.packageName,
                 R.layout.widget_layout
             )
+            views.apply {
+
+                // click listeners
+                setOnClickPendingIntent(
+                    R.id.refresh,
+                    PendingIntent.getService(
+                        context,
+                        0,
+                        Intent(context, UpdateService::class.java).apply {
+                            action = UpdateService.ACTION_UPDATE_SERVICE
+                        },
+                        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                )
+                setOnClickPendingIntent(
+                    R.id.login,
+                    PendingIntent.getActivity(
+                        context,
+                        0,
+                        Intent(context, MainActivity::class.java),
+                        PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                )
+            }
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
@@ -64,6 +88,7 @@ class LoginWidgetProvider : AppWidgetProvider() {
                     context.packageName,
                     R.layout.widget_layout
                 ).apply {
+                    // update status
                     setTextViewText(
                         R.id.status,
                         intent.getStringExtra(UpdateService.EXTRA_STATUS)
@@ -77,15 +102,6 @@ class LoginWidgetProvider : AppWidgetProvider() {
                         intent.getIntExtra(
                             UpdateService.EXTRA_ICON,
                             R.drawable.baseline_question_mark_24
-                        )
-                    )
-                    setOnClickPendingIntent(
-                        R.id.base,
-                        PendingIntent.getActivity(
-                            context,
-                            0,
-                            Intent(context, MainActivity::class.java),
-                            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
                         )
                     )
                 }
